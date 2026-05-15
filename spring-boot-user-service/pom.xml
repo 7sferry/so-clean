@@ -28,10 +28,15 @@
 			<artifactId>user-usecase</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.example</groupId>-->
+<!--			<artifactId>spring-data-jpa-user-repository</artifactId>-->
+<!--			<version>${project.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>com.example</groupId>
-			<artifactId>spring-data-jpa-user-repository</artifactId>
-			<version>${project.version}</version>
+			<artifactId>jooq-user-repository</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
