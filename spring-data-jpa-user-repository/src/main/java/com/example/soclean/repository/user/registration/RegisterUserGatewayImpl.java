@@ -4,6 +4,7 @@ import com.example.soclean.domain.user.UserRecord;
 import com.example.soclean.repository.user.entity.UserEntity;
 import com.example.soclean.repository.user.jpa.UserJpaRepository;
 import com.example.soclean.usecase.user.registration.RegisterUserGateway;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /************************
@@ -11,13 +12,10 @@ import org.springframework.stereotype.Component;
  * May 2026             *
  ************************/
 
+@RequiredArgsConstructor
 public class RegisterUserGatewayImpl implements RegisterUserGateway {
 
 	private final UserJpaRepository userJpaRepository;
-
-	public RegisterUserGatewayImpl(UserJpaRepository userJpaRepository) {
-		this.userJpaRepository = userJpaRepository;
-	}
 
 	@Override
 	public UserRecord save(UserRecord user) {
