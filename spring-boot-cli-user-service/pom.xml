@@ -28,20 +28,21 @@
 			<artifactId>user-usecase</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>spring-data-jpa-user-repository</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.example</groupId>-->
+<!--			<artifactId>spring-data-jpa-user-repository</artifactId>-->
+<!--			<version>${project.version}</version>-->
+<!--		</dependency>-->
+			<dependency>
+				<groupId>com.example</groupId>
+				<artifactId>jooq-user-repository</artifactId>
+				<version>1.0-SNAPSHOT</version>
+			</dependency>
 
 		<dependency>
 			<groupId>org.springframework.shell</groupId>
 			<artifactId>spring-shell-starter</artifactId>
 			<version>3.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -58,6 +59,17 @@
 				<version>${spring-boot.version}</version>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<parameters>true</parameters>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>
