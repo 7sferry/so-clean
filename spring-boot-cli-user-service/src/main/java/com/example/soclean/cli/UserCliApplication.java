@@ -1,0 +1,24 @@
+package com.example.soclean.cli;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.shell.command.annotation.CommandScan;
+
+/************************
+ * Author: [MR FERRY™]  *
+ * May 2026             *
+ ************************/
+
+@SpringBootApplication(scanBasePackages = "com.example.soclean")
+@EntityScan("com.example.soclean.repository")
+@EnableJpaRepositories("com.example.soclean.repository")
+@CommandScan
+public class UserCliApplication{
+
+	public static void main(String[] args) {
+		SpringApplication.run(UserCliApplication.class, args);
+	}
+
+}

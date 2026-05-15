@@ -20,13 +20,14 @@
 		<module>spring-data-jpa-user-repository</module>
 		<module>jooq-user-repository</module>
 		<module>spring-boot-user-service</module>
+		<module>spring-boot-cli-user-service</module>
 	</modules>
 
 	<properties>
 		<java.version>21</java.version>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
-<!--		<maven.compiler.parameters>true</maven.compiler.parameters>-->
+		<maven.compiler.parameters>true</maven.compiler.parameters>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring-boot.version>3.5.0</spring-boot.version>
 		<jooq.version>3.19.34</jooq.version>
