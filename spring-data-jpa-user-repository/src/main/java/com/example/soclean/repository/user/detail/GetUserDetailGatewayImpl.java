@@ -13,7 +13,6 @@ import java.util.Optional;
  * May 2026             *
  ************************/
 
-@Component
 public class GetUserDetailGatewayImpl implements GetUserDetailGateway {
 
 	private final UserJpaRepository userJpaRepository;

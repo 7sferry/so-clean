@@ -15,7 +15,7 @@ so-clean/
 
 for jooq:
 ```sh
-mvn clean install -pl jooq-user-repository
+mvn clean install -pl jooq-user-repository //only at the first time
 
 mvn generate-sources -pl jooq-user-repository
 ```

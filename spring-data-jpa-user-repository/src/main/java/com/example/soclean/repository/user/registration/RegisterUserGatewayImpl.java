@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  * May 2026             *
  ************************/
 
-@Component
 public class RegisterUserGatewayImpl implements RegisterUserGateway {
 
 	private final UserJpaRepository userJpaRepository;
