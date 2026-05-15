@@ -11,6 +11,7 @@ so-clean/
 ├── spring-data-jpa-user-repository/    Data access with Spring Data JPA.
 ├── jooq-user-repository/               Data access with Jooq.
 └── spring-boot-user-service/           Spring Boot app. Controllers, presenter implementations, config.
+└── spring-boot-cli-user-service/       Spring Boot shell app version.
 ```
 
 for jooq:
