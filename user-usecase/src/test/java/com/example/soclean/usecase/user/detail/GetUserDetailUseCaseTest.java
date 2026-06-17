@@ -1,8 +1,10 @@
 package com.example.soclean.usecase.user.detail;
 
-import com.example.soclean.domain.user.UserRecord;
-import com.example.soclean.domain.user.detail.GetUserDetailRequest;
-import com.example.soclean.domain.user.detail.GetUserDetailResult;
+import com.example.soclean.domain.user.InvalidUsernameException;
+import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.UserDomain;
+import com.example.soclean.domain.user.UserNotFoundException;
+import com.example.soclean.domain.user.Username;
 import org.assertj.core.api.BDDSoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
@@ -40,29 +43,28 @@ class GetUserDetailUseCaseTest {
 
 	@Test
 	void givenExistingUsername_shouldPresentUserDetail() {
-		UserRecord user = new UserRecord("alice", "secret12");
-		user.setId(1L);
-		willReturn(Optional.of(user)).given(getUserDetailGateway).findByUsername("alice");
+		UserDomain user = UserDomain.construct(1L, new Username("alice"), new Password("secret12"), true, Instant.now());
+		willReturn(Optional.of(user)).given(getUserDetailGateway).findByUsername(new Username("alice"));
 
 		getUserDetailUseCase.execute(new GetUserDetailRequest("alice"), presenter);
 
 		then(presenter).should().present(resultCaptor.capture());
 		GetUserDetailResult result = resultCaptor.getValue();
 		BDDSoftAssertions.thenSoftly(softly -> {
-			softly.then(result.user().getId()).isEqualTo(1L);
-			softly.then(result.user().getUsername()).isEqualTo("alice");
-			softly.then(result.user().isActive()).isTrue();
-			softly.then(result.user().getCreatedAt()).isNotNull();
+			softly.then(result.user().id()).isEqualTo(1L);
+			softly.then(result.user().username().value()).isEqualTo("alice");
+			softly.then(result.user().active()).isTrue();
+			softly.then(result.user().createdAt()).isNotNull();
 		});
 	}
 
 	@Test
 	void givenNonExistingUsername_shouldThrowException() {
-		willReturn(Optional.empty()).given(getUserDetailGateway).findByUsername("unknown");
+		willReturn(Optional.empty()).given(getUserDetailGateway).findByUsername(new Username("unknown"));
 
 		thenThrownBy(() -> getUserDetailUseCase.execute(
 				new GetUserDetailRequest("unknown"), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(UserNotFoundException.class)
 				.hasMessageContaining("User not found: unknown");
 
 		then(presenter).shouldHaveNoInteractions();
@@ -72,7 +74,7 @@ class GetUserDetailUseCaseTest {
 	void givenBlankUsername_shouldThrowException() {
 		thenThrownBy(() -> getUserDetailUseCase.execute(
 				new GetUserDetailRequest("  "), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(InvalidUsernameException.class)
 				.hasMessageContaining("Username must not be blank");
 
 		then(getUserDetailGateway).shouldHaveNoInteractions();

@@ -1,10 +1,10 @@
 package com.example.soclean.cli.user.detail;
 
-import com.example.soclean.domain.user.detail.GetUserDetailRequest;
+import com.example.soclean.usecase.user.detail.GetUserDetailRequest;
 import com.example.soclean.usecase.user.detail.GetUserDetailUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.CommandRegistration.OptionArity;
+import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
 
 /************************

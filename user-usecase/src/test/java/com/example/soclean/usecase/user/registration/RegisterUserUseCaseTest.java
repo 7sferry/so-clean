@@ -1,8 +1,11 @@
 package com.example.soclean.usecase.user.registration;
 
-import com.example.soclean.domain.user.UserRecord;
-import com.example.soclean.domain.user.registration.RegisterUserRequest;
-import com.example.soclean.domain.user.registration.RegisterUserResult;
+import com.example.soclean.domain.user.InvalidUsernameException;
+import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.UserDomain;
+import com.example.soclean.domain.user.Username;
+import com.example.soclean.domain.user.UsernameAlreadyTakenException;
+import com.example.soclean.domain.user.WeakPasswordException;
 import org.assertj.core.api.BDDSoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +14,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.Instant;
 
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,31 +44,30 @@ class RegisterUserUseCaseTest {
 
 	@Test
 	void givenValidRequest_shouldSaveAndPresentUser() {
-		UserRecord savedUser = new UserRecord("alice", "secret12");
-		savedUser.setId(1L);
-		willReturn(false).given(registerUserGateway).existsByUsername("alice");
-		willReturn(savedUser).given(registerUserGateway).save(any(UserRecord.class));
+		UserDomain savedUser = UserDomain.construct(1L, new Username("alice"), new Password("secret12"), true, Instant.now());
+		willReturn(false).given(registerUserGateway).existsByUsername(new Username("alice"));
+		willReturn(savedUser).given(registerUserGateway).save(any(UserDomain.class));
 
 		registerUserUseCase.execute(new RegisterUserRequest("alice", "secret12"), presenter);
 
-		then(registerUserGateway).should().save(any(UserRecord.class));
+		then(registerUserGateway).should().save(any(UserDomain.class));
 		then(presenter).should().present(resultCaptor.capture());
 		RegisterUserResult result = resultCaptor.getValue();
 		BDDSoftAssertions.thenSoftly(softly -> {
-			softly.then(result.user().getId()).isEqualTo(1L);
-			softly.then(result.user().getUsername()).isEqualTo("alice");
-			softly.then(result.user().isActive()).isTrue();
-			softly.then(result.user().getCreatedAt()).isNotNull();
+			softly.then(result.user().id()).isEqualTo(1L);
+			softly.then(result.user().username().value()).isEqualTo("alice");
+			softly.then(result.user().active()).isTrue();
+			softly.then(result.user().createdAt()).isNotNull();
 		});
 	}
 
 	@Test
 	void givenDuplicateUsername_shouldThrowException() {
-		willReturn(true).given(registerUserGateway).existsByUsername("alice");
+		willReturn(true).given(registerUserGateway).existsByUsername(new Username("alice"));
 
 		thenThrownBy(() -> registerUserUseCase.execute(
 				new RegisterUserRequest("alice", "secret12"), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(UsernameAlreadyTakenException.class)
 				.hasMessageContaining("Username already taken");
 
 		then(presenter).shouldHaveNoInteractions();
@@ -73,7 +77,7 @@ class RegisterUserUseCaseTest {
 	void givenBlankUsername_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
 				new RegisterUserRequest("  ", "secret12"), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(InvalidUsernameException.class)
 				.hasMessageContaining("Username must not be blank");
 
 		then(registerUserGateway).shouldHaveNoInteractions();
@@ -84,7 +88,7 @@ class RegisterUserUseCaseTest {
 	void givenBlankPassword_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
 				new RegisterUserRequest("alice", ""), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(WeakPasswordException.class)
 				.hasMessageContaining("Password must not be blank");
 
 		then(registerUserGateway).shouldHaveNoInteractions();
@@ -95,7 +99,7 @@ class RegisterUserUseCaseTest {
 	void givenPasswordTooShort_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
 				new RegisterUserRequest("alice", "short1"), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(WeakPasswordException.class)
 				.hasMessageContaining("Password must be at least 8 characters");
 
 		then(registerUserGateway).shouldHaveNoInteractions();
@@ -106,7 +110,7 @@ class RegisterUserUseCaseTest {
 	void givenPasswordWithoutNumber_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
 				new RegisterUserRequest("alice", "allletters"), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(WeakPasswordException.class)
 				.hasMessageContaining("Password must contain at least one letter and one number");
 
 		then(registerUserGateway).shouldHaveNoInteractions();
@@ -117,7 +121,7 @@ class RegisterUserUseCaseTest {
 	void givenPasswordWithoutLetter_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
 				new RegisterUserRequest("alice", "12345678"), presenter))
-				.isInstanceOf(IllegalArgumentException.class)
+				.isInstanceOf(WeakPasswordException.class)
 				.hasMessageContaining("Password must contain at least one letter and one number");
 
 		then(registerUserGateway).shouldHaveNoInteractions();

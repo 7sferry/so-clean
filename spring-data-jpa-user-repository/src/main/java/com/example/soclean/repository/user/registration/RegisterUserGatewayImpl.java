@@ -1,11 +1,12 @@
 package com.example.soclean.repository.user.registration;
 
-import com.example.soclean.domain.user.UserRecord;
+import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.UserDomain;
+import com.example.soclean.domain.user.Username;
 import com.example.soclean.repository.user.entity.UserEntity;
 import com.example.soclean.repository.user.jpa.UserJpaRepository;
 import com.example.soclean.usecase.user.registration.RegisterUserGateway;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 /************************
  * Author: [MR FERRY™]  *
@@ -18,23 +19,25 @@ public class RegisterUserGatewayImpl implements RegisterUserGateway {
 	private final UserJpaRepository userJpaRepository;
 
 	@Override
-	public UserRecord save(UserRecord user) {
+	public UserDomain save(UserDomain user) {
 		UserEntity entity = new UserEntity();
-		entity.setUsername(user.getUsername());
-		entity.setPassword(user.getPassword());
-		entity.setActive(user.isActive());
-		entity.setCreatedAt(user.getCreatedAt());
+		entity.setUsername(user.usernameValue());
+		entity.setPassword(user.passwordValue());
+		entity.setActive(user.active());
+		entity.setCreatedAt(user.createdAt());
 		UserEntity saved = userJpaRepository.save(entity);
-		UserRecord result = new UserRecord(saved.getUsername(), saved.getPassword());
-		result.setId(saved.getId());
-		result.setActive(saved.isActive());
-		result.setCreatedAt(saved.getCreatedAt());
-		return result;
+		return UserDomain.construct(
+				saved.getId(),
+				new Username(saved.getUsername()),
+				new Password(saved.getPassword()),
+				saved.isActive(),
+				saved.getCreatedAt()
+		);
 	}
 
 	@Override
-	public boolean existsByUsername(String username) {
-		return userJpaRepository.existsByUsername(username);
+	public boolean existsByUsername(Username username) {
+		return userJpaRepository.existsByUsername(username.value());
 	}
 
 }

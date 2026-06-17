@@ -1,6 +1,6 @@
 package com.example.soclean.cli.user.registration;
 
-import com.example.soclean.domain.user.registration.RegisterUserRequest;
+import com.example.soclean.usecase.user.registration.RegisterUserRequest;
 import com.example.soclean.usecase.user.registration.RegisterUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.command.CommandRegistration.OptionArity;

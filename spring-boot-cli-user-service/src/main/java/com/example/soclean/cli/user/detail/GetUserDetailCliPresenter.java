@@ -1,8 +1,8 @@
 package com.example.soclean.cli.user.detail;
 
-import com.example.soclean.domain.user.UserRecord;
-import com.example.soclean.domain.user.detail.GetUserDetailResult;
+import com.example.soclean.domain.user.UserDomain;
 import com.example.soclean.usecase.user.detail.GetUserDetailPresenter;
+import com.example.soclean.usecase.user.detail.GetUserDetailResult;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -22,11 +22,11 @@ public class GetUserDetailCliPresenter implements GetUserDetailPresenter {
 
 	@Override
 	public void present(GetUserDetailResult result) {
-		UserRecord user = result.user();
+		UserDomain user = result.user();
 		output = "User detail:\n"
-				+ "  Username  : " + user.getUsername() + "\n"
-				+ "  Status    : " + (user.isActive() ? "Active" : "Inactive") + "\n"
-				+ "  Created at: " + DATE_FORMATTER.format(user.getCreatedAt());
+				+ "  Username  : " + user.username().value() + '\n'
+				+ "  Status    : " + (user.isActive() ? "Active" : "Inactive") + '\n'
+				+ "  Created at: " + DATE_FORMATTER.format(user.createdAt());
 	}
 
 	public String getOutput() {

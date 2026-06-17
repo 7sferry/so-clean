@@ -1,4 +1,4 @@
-package com.example.soclean.domain.user.detail;
+package com.example.soclean.usecase.user.detail;
 
 /************************
  * Author: [MR FERRY™]  *

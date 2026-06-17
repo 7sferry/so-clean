@@ -1,6 +1,8 @@
 package com.example.soclean.repository.user.registration;
 
-import com.example.soclean.domain.user.UserRecord;
+import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.UserDomain;
+import com.example.soclean.domain.user.Username;
 import com.example.soclean.repository.user.generated.tables.Users;
 import com.example.soclean.usecase.user.registration.RegisterUserGateway;
 import lombok.RequiredArgsConstructor;
@@ -23,27 +25,29 @@ public class RegisterUserGatewayImpl implements RegisterUserGateway {
 	private final DSLContext dsl;
 
 	@Override
-	public UserRecord save(UserRecord user) {
-		LocalDateTime createdAt = LocalDateTime.ofInstant(user.getCreatedAt(), ZoneOffset.UTC);
+	public UserDomain save(UserDomain user) {
+		LocalDateTime createdAt = LocalDateTime.ofInstant(user.createdAt(), ZoneOffset.UTC);
 		Record record = dsl.insertInto(USERS)
-				.set(USERS.USERNAME, user.getUsername())
-				.set(USERS.PASSWORD, user.getPassword())
+				.set(USERS.USERNAME, user.username().value())
+				.set(USERS.PASSWORD, user.password().value())
 				.set(USERS.ACTIVE, user.isActive())
 				.set(USERS.CREATED_AT, createdAt)
 				.returningResult(USERS.ID, USERS.USERNAME, USERS.PASSWORD, USERS.ACTIVE, USERS.CREATED_AT)
 				.fetchOne();
 
-		UserRecord result = new UserRecord(record.get(USERS.USERNAME), record.get(USERS.PASSWORD));
-		result.setId(record.get(USERS.ID));
-		result.setActive(record.get(USERS.ACTIVE));
-		result.setCreatedAt(record.get(USERS.CREATED_AT).toInstant(ZoneOffset.UTC));
-		return result;
+		return UserDomain.construct(
+				record.get(USERS.ID),
+				new Username(record.get(USERS.USERNAME)),
+				new Password(record.get(USERS.PASSWORD)),
+				record.get(USERS.ACTIVE),
+				record.get(USERS.CREATED_AT).toInstant(ZoneOffset.UTC)
+		);
 	}
 
 	@Override
-	public boolean existsByUsername(String username) {
+	public boolean existsByUsername(Username username) {
 		return dsl.fetchExists(
-				dsl.selectOne().from(USERS).where(USERS.USERNAME.eq(username))
+				dsl.selectOne().from(USERS).where(USERS.USERNAME.eq(username.value()))
 		);
 	}
 

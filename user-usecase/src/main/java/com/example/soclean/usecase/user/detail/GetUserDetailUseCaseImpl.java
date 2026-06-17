@@ -1,8 +1,8 @@
 package com.example.soclean.usecase.user.detail;
 
-import com.example.soclean.domain.user.UserRecord;
-import com.example.soclean.domain.user.detail.GetUserDetailRequest;
-import com.example.soclean.domain.user.detail.GetUserDetailResult;
+import com.example.soclean.domain.user.UserDomain;
+import com.example.soclean.domain.user.UserNotFoundException;
+import com.example.soclean.domain.user.Username;
 import lombok.RequiredArgsConstructor;
 
 /************************
@@ -17,11 +17,9 @@ public class GetUserDetailUseCaseImpl implements GetUserDetailUseCase {
 
 	@Override
 	public void execute(GetUserDetailRequest request, GetUserDetailPresenter presenter) {
-		if (request.username() == null || request.username().isBlank()) {
-			throw new IllegalArgumentException("Username must not be blank");
-		}
-		UserRecord user = getUserDetailGateway.findByUsername(request.username())
-				.orElseThrow(() -> new IllegalArgumentException("User not found: " + request.username()));
+		Username username = new Username(request.username());
+		UserDomain user = getUserDetailGateway.findByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException(username));
 		presenter.present(new GetUserDetailResult(user));
 	}
 
