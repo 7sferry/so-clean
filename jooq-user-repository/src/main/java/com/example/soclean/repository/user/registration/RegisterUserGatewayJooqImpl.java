@@ -18,7 +18,7 @@ import java.time.ZoneOffset;
  ************************/
 
 @RequiredArgsConstructor
-public class RegisterUserGatewayImpl implements RegisterUserGateway {
+public class RegisterUserGatewayJooqImpl implements RegisterUserGateway {
 
 	private static final Users USERS = Users.USERS;
 
@@ -30,7 +30,7 @@ public class RegisterUserGatewayImpl implements RegisterUserGateway {
 		Record record = dsl.insertInto(USERS)
 				.set(USERS.USERNAME, user.username().value())
 				.set(USERS.PASSWORD, user.password().value())
-				.set(USERS.ACTIVE, user.isActive())
+				.set(USERS.ACTIVE, user.active())
 				.set(USERS.CREATED_AT, createdAt)
 				.returningResult(USERS.ID, USERS.USERNAME, USERS.PASSWORD, USERS.ACTIVE, USERS.CREATED_AT)
 				.fetchOne();

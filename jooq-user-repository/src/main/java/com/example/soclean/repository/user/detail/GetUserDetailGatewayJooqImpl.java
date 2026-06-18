@@ -18,7 +18,7 @@ import java.util.Optional;
  ************************/
 
 @RequiredArgsConstructor
-public class GetUserDetailGatewayImpl implements GetUserDetailGateway {
+public class GetUserDetailGatewayJooqImpl implements GetUserDetailGateway {
 
 	private static final Users USERS = Users.USERS;
 

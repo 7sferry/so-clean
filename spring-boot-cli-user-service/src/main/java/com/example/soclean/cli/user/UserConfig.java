@@ -1,7 +1,7 @@
 package com.example.soclean.cli.user;
 
-import com.example.soclean.repository.user.detail.GetUserDetailGatewayImpl;
-import com.example.soclean.repository.user.registration.RegisterUserGatewayImpl;
+import com.example.soclean.repository.user.detail.GetUserDetailGatewayJooqImpl;
+import com.example.soclean.repository.user.registration.RegisterUserGatewayJooqImpl;
 import com.example.soclean.usecase.user.detail.GetUserDetailGateway;
 import com.example.soclean.usecase.user.detail.GetUserDetailUseCase;
 import com.example.soclean.usecase.user.detail.GetUserDetailUseCaseImpl;
@@ -27,12 +27,12 @@ public class UserConfig {
 
 	@Bean
 	RegisterUserGateway registerUserGateway(DSLContext dslContext){
-		return new RegisterUserGatewayImpl(dslContext);
+		return new RegisterUserGatewayJooqImpl(dslContext);
 	}
 
 	@Bean
 	GetUserDetailGateway userDetailGateway(DSLContext dslContext){
-		return new GetUserDetailGatewayImpl(dslContext);
+		return new GetUserDetailGatewayJooqImpl(dslContext);
 	}
 
 	@Bean

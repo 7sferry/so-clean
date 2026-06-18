@@ -16,9 +16,8 @@ import java.time.format.DateTimeFormatter;
 @Getter
 public class GetUserDetailPresenterImpl implements GetUserDetailPresenter {
 
-	private static final ZoneId ZONE = ZoneId.of("Asia/Jakarta");
 	private static final DateTimeFormatter DATE_FORMATTER =
-			DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy 'at' HH:mm").withZone(ZONE);
+			DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy 'at' HH:mm").withZone(ZoneId.of("Asia/Jakarta"));
 
 	private GetUserDetailResponse response;
 
