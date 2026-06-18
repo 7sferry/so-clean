@@ -1,12 +1,10 @@
 package com.example.soclean.service.user.detail;
 
-import com.example.soclean.domain.user.detail.GetUserDetailRequest;
-import com.example.soclean.domain.user.detail.GetUserDetailResponse;
+import com.example.soclean.usecase.user.detail.GetUserDetailRequest;
 import com.example.soclean.usecase.user.detail.GetUserDetailUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /************************

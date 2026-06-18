@@ -10,9 +10,7 @@ import org.springframework.shell.command.annotation.CommandScan;
  * May 2026             *
  ************************/
 
-@SpringBootApplication(scanBasePackages = "com.example.soclean")
-@EntityScan("com.example.soclean.repository")
-//@EnableJpaRepositories("com.example.soclean.repository")
+@SpringBootApplication
 @CommandScan
 public class UserCliApplication{
 

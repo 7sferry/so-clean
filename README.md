@@ -20,3 +20,11 @@ mvn clean install -pl jooq-user-repository //only at the first time
 
 mvn generate-sources -pl jooq-user-repository
 ```
+The Layers (inside → out)
+
+1. Entities — Enterprise-wide business rules. Pure domain objects (e.g., Order, User). No framework, no DB, no I/O.
+2. Use Cases — Application-specific business rules. Orchestrate entities to fulfill a user action (e.g., PlaceOrder,
+   TransferFunds).
+3. Interface Adapters — Controllers, presenters, gateways. Translate between use cases and the outside world (HTTP
+   requests → use case input, use case output → JSON).
+4. Frameworks & Drivers — Web framework, DB, UI, external APIs. The replaceable details.

@@ -1,8 +1,9 @@
 package com.example.soclean.cli.user.detail;
 
-import com.example.soclean.domain.user.UserRecord;
-import com.example.soclean.domain.user.detail.GetUserDetailResult;
+import com.example.soclean.domain.user.UserDomain;
 import com.example.soclean.usecase.user.detail.GetUserDetailPresenter;
+import com.example.soclean.usecase.user.detail.GetUserDetailResult;
+import lombok.Getter;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -12,25 +13,21 @@ import java.time.format.DateTimeFormatter;
  * May 2026             *
  ************************/
 
+@Getter
 public class GetUserDetailCliPresenter implements GetUserDetailPresenter {
 
-	private static final ZoneId ZONE = ZoneId.of("Asia/Jakarta");
 	private static final DateTimeFormatter DATE_FORMATTER =
-			DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy 'at' HH:mm").withZone(ZONE);
+			DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").withZone(ZoneId.of("Asia/Jakarta"));
 
 	private String output;
 
 	@Override
 	public void present(GetUserDetailResult result) {
-		UserRecord user = result.user();
+		UserDomain user = result.user();
 		output = "User detail:\n"
-				+ "  Username  : " + user.getUsername() + "\n"
-				+ "  Status    : " + (user.isActive() ? "Active" : "Inactive") + "\n"
-				+ "  Created at: " + DATE_FORMATTER.format(user.getCreatedAt());
-	}
-
-	public String getOutput() {
-		return output;
+				+ "  Username  : " + user.username().value() + '\n'
+				+ "  Status    : " + (user.active() ? "Active" : "Inactive") + '\n'
+				+ "  Created at: " + DATE_FORMATTER.format(user.createdAt());
 	}
 
 }
