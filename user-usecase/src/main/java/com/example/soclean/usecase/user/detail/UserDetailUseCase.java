@@ -1,0 +1,12 @@
+package com.example.soclean.usecase.user.detail;
+
+/************************
+ * Author: [MR FERRY™]  *
+ * May 2026             *
+ ************************/
+
+public interface UserDetailUseCase{
+
+	void execute(UserDetailRequest request, UserDetailPresenter presenter);
+
+}
