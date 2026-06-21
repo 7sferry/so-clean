@@ -13,12 +13,15 @@ so-clean/
 └── user-service-spring-boot-web/           Spring Boot app. Controllers, presenter implementations, config.
 └── user-service-spring-boot-cli/       Spring Boot shell app version.
 ```
+requirements:
+- JDK 21
+- postgreseql 16
 
 for jooq:
 ```sh
 mvn clean install -pl user-repository-jooq //only at the first time
 
-mvn generate-sources -pl jooq-user-repository
+mvn generate-sources -pl jooq-user-repository //for generating the jooq code
 ```
 The Layers (inside → out)
 
