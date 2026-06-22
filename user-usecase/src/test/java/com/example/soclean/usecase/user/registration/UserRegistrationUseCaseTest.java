@@ -40,7 +40,7 @@ class UserRegistrationUseCaseTest{
 	private ArgumentCaptor<UserRegistrationResult> resultCaptor;
 
 	@InjectMocks
-	private UserRegistrationUseCaseImpl registerUserUseCase;
+	private UserRegistrationDefaultUseCase registerUserUseCase;
 
 	@Test
 	void givenValidRequest_shouldSaveAndPresentUser() {

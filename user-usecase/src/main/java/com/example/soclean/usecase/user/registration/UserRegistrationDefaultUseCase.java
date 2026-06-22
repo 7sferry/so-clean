@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
  ************************/
 
 @RequiredArgsConstructor
-public class UserRegistrationUseCaseImpl implements UserRegistrationUseCase{
+public class UserRegistrationDefaultUseCase implements UserRegistrationUseCase{
 
 	private final UserRegistrationGateway userRegistrationGateway;
 

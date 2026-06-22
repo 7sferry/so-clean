@@ -10,7 +10,7 @@ so-clean/
 ├── user-usecase/                       Business logic. Use case interfaces/impls, gateway and presenter interfaces.
 ├── user-repository-spring-data-jpa/    Data access with Spring Data JPA.
 ├── user-repository-jooq/               Data access with Jooq.
-└── user-service-spring-boot-web/           Spring Boot app. Controllers, presenter implementations, config.
+├── user-service-spring-boot-web/           Spring Boot app. Controllers, presenter implementations, config.
 └── user-service-spring-boot-cli/       Spring Boot shell app version.
 ```
 requirements:

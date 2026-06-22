@@ -39,7 +39,7 @@ class UserDetailUseCaseTest{
 	private ArgumentCaptor<UserDetailResult> resultCaptor;
 
 	@InjectMocks
-	private UserDetailUseCaseImpl getUserDetailUseCase;
+	private UserDetailDefaultUseCase getUserDetailUseCase;
 
 	@Test
 	void givenExistingUsername_shouldPresentUserDetail() {

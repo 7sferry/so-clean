@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
  ************************/
 
 @RequiredArgsConstructor
-public class UserDetailUseCaseImpl implements UserDetailUseCase{
+public class UserDetailDefaultUseCase implements UserDetailUseCase{
 
 	private final UserDetailGateway userDetailGateway;
 

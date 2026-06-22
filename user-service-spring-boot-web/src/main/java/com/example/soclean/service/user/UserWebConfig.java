@@ -5,10 +5,10 @@ import com.example.soclean.repository.user.jpa.UserJpaRepository;
 import com.example.soclean.repository.user.registration.UserRegistrationJpaGateway;
 import com.example.soclean.usecase.user.detail.UserDetailGateway;
 import com.example.soclean.usecase.user.detail.UserDetailUseCase;
-import com.example.soclean.usecase.user.detail.UserDetailUseCaseImpl;
+import com.example.soclean.usecase.user.detail.UserDetailDefaultUseCase;
 import com.example.soclean.usecase.user.registration.UserRegistrationGateway;
 import com.example.soclean.usecase.user.registration.UserRegistrationUseCase;
-import com.example.soclean.usecase.user.registration.UserRegistrationUseCaseImpl;
+import com.example.soclean.usecase.user.registration.UserRegistrationDefaultUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +22,7 @@ public class UserWebConfig{
 
 	@Bean
 	public UserRegistrationUseCase userRegistrationUseCase(UserRegistrationGateway userRegistrationGateway) {
-		return new UserRegistrationUseCaseImpl(userRegistrationGateway);
+		return new UserRegistrationDefaultUseCase(userRegistrationGateway);
 	}
 
 	@Bean
@@ -37,7 +37,7 @@ public class UserWebConfig{
 
 	@Bean
 	public UserDetailUseCase userDetailUseCase(UserDetailGateway userDetailGateway) {
-		return new UserDetailUseCaseImpl(userDetailGateway);
+		return new UserDetailDefaultUseCase(userDetailGateway);
 	}
 
 }
