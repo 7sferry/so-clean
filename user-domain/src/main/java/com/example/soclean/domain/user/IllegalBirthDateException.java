@@ -5,9 +5,9 @@ package com.example.soclean.domain.user;
  * May 2026             *
  ************************/
 
-public class WeakPasswordException extends RuntimeException {
+public class IllegalBirthDateException extends RuntimeException {
 
-	public WeakPasswordException(String message) {
+	public IllegalBirthDateException(String message) {
 		super(message);
 	}
 

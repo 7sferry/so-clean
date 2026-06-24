@@ -1,28 +1,29 @@
 package com.example.soclean.domain.user;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 /************************
  * Author: [MR FERRY™]  *
  * May 2026             *
  ************************/
 
-public record UserDomain(Long id, Username username, Password password, boolean active, Instant createdAt) {
+public record UserDomain(Long id, Username username, BirthDate birthDate, boolean active, Instant createdAt) {
 
-	public static UserDomain register(Username username, Password password) {
-		return new UserDomain(null, username, password, true, Instant.now());
+	public static UserDomain register(Username username, BirthDate birthDate) {
+		return new UserDomain(null, username, birthDate, true, Instant.now());
 	}
 
-	public static UserDomain construct(Long id, Username username, Password password, boolean active, Instant createdAt) {
-		return new UserDomain(id, username, password, active, createdAt);
+	public static UserDomain construct(Long id, Username username, BirthDate birthDate, boolean active, Instant createdAt) {
+		return new UserDomain(id, username, birthDate, active, createdAt);
 	}
 
 	public String usernameValue() {
 		return username.value();
 	}
 
-	public String passwordValue() {
-		return password.value();
+	public LocalDate birthDateValue() {
+		return birthDate.value();
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.example.soclean.usecase.user.detail;
 
 import com.example.soclean.domain.user.InvalidUsernameException;
-import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.BirthDate;
 import com.example.soclean.domain.user.UserDomain;
 import com.example.soclean.domain.user.UserNotFoundException;
 import com.example.soclean.domain.user.Username;
@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
@@ -43,7 +44,7 @@ class UserDetailUseCaseTest{
 
 	@Test
 	void givenExistingUsername_shouldPresentUserDetail() {
-		UserDomain user = UserDomain.construct(1L, new Username("alice"), new Password("secret12"), true, Instant.now());
+		UserDomain user = UserDomain.construct(1L, new Username("alice"), new BirthDate(LocalDate.now().minusYears(20)), true, Instant.now());
 		willReturn(Optional.of(user)).given(userDetailGateway).findByUsername(new Username("alice"));
 
 		getUserDetailUseCase.execute(new UserDetailRequest("alice"), presenter);

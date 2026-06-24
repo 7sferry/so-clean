@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 /************************
  * Author: [MR FERRY™]  *
@@ -30,7 +31,7 @@ public class UserEntity {
 	private String username;
 
 	@Column(nullable = false)
-	private String password;
+	private LocalDate birthDate;
 
 	@Column(nullable = false)
 	private boolean active;

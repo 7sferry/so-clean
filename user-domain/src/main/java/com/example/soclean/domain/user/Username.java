@@ -11,6 +11,9 @@ public record Username(String value) {
 		if (value == null || value.isBlank()) {
 			throw new InvalidUsernameException("Username must not be blank");
 		}
+		if (value.length() < 5) {
+			throw new InvalidUsernameException("Username must be at least 5 characters long");
+		}
 	}
 
 }

@@ -6,7 +6,7 @@
 let register = (username) => fetch("http://localhost:8003/api/users/register", {
 	method: "POST",
 	headers: { "Content-Type": "application/json" },
-	body: JSON.stringify({ username: username, password: "secret12" })
+	body: JSON.stringify({ username: username, birthDate: "2000-01-01" })
 })
 		.then(res => res.json())
 		.then(data => console.log(data))

@@ -1,6 +1,6 @@
 package com.example.soclean.repository.user.registration;
 
-import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.BirthDate;
 import com.example.soclean.domain.user.UserDomain;
 import com.example.soclean.domain.user.Username;
 import com.example.soclean.repository.user.generated.tables.Users;
@@ -29,16 +29,16 @@ public class UserRegistrationJooqGateway implements UserRegistrationGateway{
 		LocalDateTime createdAt = LocalDateTime.ofInstant(user.createdAt(), ZoneOffset.UTC);
 		Record record = dsl.insertInto(USERS)
 				.set(USERS.USERNAME, user.username().value())
-				.set(USERS.PASSWORD, user.password().value())
+				.set(USERS.BIRTH_DATE, user.birthDate().value())
 				.set(USERS.ACTIVE, user.active())
 				.set(USERS.CREATED_AT, createdAt)
-				.returningResult(USERS.ID, USERS.USERNAME, USERS.PASSWORD, USERS.ACTIVE, USERS.CREATED_AT)
+				.returningResult(USERS.ID, USERS.USERNAME, USERS.BIRTH_DATE, USERS.ACTIVE, USERS.CREATED_AT)
 				.fetchOne();
 
 		return UserDomain.construct(
 				record.get(USERS.ID),
 				new Username(record.get(USERS.USERNAME)),
-				new Password(record.get(USERS.PASSWORD)),
+				new BirthDate(record.get(USERS.BIRTH_DATE)),
 				record.get(USERS.ACTIVE),
 				record.get(USERS.CREATED_AT).toInstant(ZoneOffset.UTC)
 		);

@@ -1,6 +1,6 @@
 package com.example.soclean.repository.user.registration;
 
-import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.BirthDate;
 import com.example.soclean.domain.user.UserDomain;
 import com.example.soclean.domain.user.Username;
 import com.example.soclean.repository.user.entity.UserEntity;
@@ -22,14 +22,14 @@ public class UserRegistrationJpaGateway implements UserRegistrationGateway{
 	public UserDomain save(UserDomain user) {
 		UserEntity entity = new UserEntity();
 		entity.setUsername(user.usernameValue());
-		entity.setPassword(user.passwordValue());
+		entity.setBirthDate(user.birthDateValue());
 		entity.setActive(user.active());
 		entity.setCreatedAt(user.createdAt());
 		UserEntity saved = userJpaRepository.save(entity);
 		return UserDomain.construct(
 				saved.getId(),
 				new Username(saved.getUsername()),
-				new Password(saved.getPassword()),
+				new BirthDate(saved.getBirthDate()),
 				saved.isActive(),
 				saved.getCreatedAt()
 		);

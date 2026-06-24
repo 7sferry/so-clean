@@ -1,11 +1,6 @@
 package com.example.soclean.usecase.user.registration;
 
-import com.example.soclean.domain.user.InvalidUsernameException;
-import com.example.soclean.domain.user.Password;
-import com.example.soclean.domain.user.UserDomain;
-import com.example.soclean.domain.user.Username;
-import com.example.soclean.domain.user.UsernameAlreadyTakenException;
-import com.example.soclean.domain.user.WeakPasswordException;
+import com.example.soclean.domain.user.*;
 import org.assertj.core.api.BDDSoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,11 +40,11 @@ class UserRegistrationUseCaseTest{
 
 	@Test
 	void givenValidRequest_shouldSaveAndPresentUser() {
-		UserDomain savedUser = UserDomain.construct(1L, new Username("alice"), new Password("secret12"), true, Instant.now());
+		UserDomain savedUser = UserDomain.construct(1L, new Username("alice"), new BirthDate(LocalDate.now().minusYears(20)), true, Instant.now());
 		willReturn(false).given(userRegistrationGateway).existsByUsername(new Username("alice"));
 		willReturn(savedUser).given(userRegistrationGateway).save(any(UserDomain.class));
 
-		registerUserUseCase.execute(new UserRegistrationRequest("alice", "secret12"), presenter);
+		registerUserUseCase.execute(new UserRegistrationRequest("alice", LocalDate.now().minusYears(20)), presenter);
 
 		then(userRegistrationGateway).should().save(any(UserDomain.class));
 		then(presenter).should().present(resultCaptor.capture());
@@ -66,7 +62,7 @@ class UserRegistrationUseCaseTest{
 		willReturn(true).given(userRegistrationGateway).existsByUsername(new Username("alice"));
 
 		thenThrownBy(() -> registerUserUseCase.execute(
-				new UserRegistrationRequest("alice", "secret12"), presenter))
+				new UserRegistrationRequest("alice", LocalDate.now().minusYears(20)), presenter))
 				.isInstanceOf(UsernameAlreadyTakenException.class)
 				.hasMessageContaining("Username already taken");
 
@@ -76,7 +72,7 @@ class UserRegistrationUseCaseTest{
 	@Test
 	void givenBlankUsername_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
-				new UserRegistrationRequest("  ", "secret12"), presenter))
+				new UserRegistrationRequest("  ", LocalDate.now().minusYears(20)), presenter))
 				.isInstanceOf(InvalidUsernameException.class)
 				.hasMessageContaining("Username must not be blank");
 
@@ -85,44 +81,22 @@ class UserRegistrationUseCaseTest{
 	}
 
 	@Test
-	void givenBlankPassword_shouldThrowException() {
+	void givenNullBirthDate_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
-				new UserRegistrationRequest("alice", ""), presenter))
-				.isInstanceOf(WeakPasswordException.class)
-				.hasMessageContaining("Password must not be blank");
+				new UserRegistrationRequest("alice", null), presenter))
+				.isInstanceOf(IllegalBirthDateException.class)
+				.hasMessageContaining("Birth date must not be blank");
 
 		then(userRegistrationGateway).shouldHaveNoInteractions();
 		then(presenter).shouldHaveNoInteractions();
 	}
 
 	@Test
-	void givenPasswordTooShort_shouldThrowException() {
+	void givenUnderageBirthDate_shouldThrowException() {
 		thenThrownBy(() -> registerUserUseCase.execute(
-				new UserRegistrationRequest("alice", "short1"), presenter))
-				.isInstanceOf(WeakPasswordException.class)
-				.hasMessageContaining("Password must be at least 8 characters");
-
-		then(userRegistrationGateway).shouldHaveNoInteractions();
-		then(presenter).shouldHaveNoInteractions();
-	}
-
-	@Test
-	void givenPasswordWithoutNumber_shouldThrowException() {
-		thenThrownBy(() -> registerUserUseCase.execute(
-				new UserRegistrationRequest("alice", "allletters"), presenter))
-				.isInstanceOf(WeakPasswordException.class)
-				.hasMessageContaining("Password must contain at least one letter and one number");
-
-		then(userRegistrationGateway).shouldHaveNoInteractions();
-		then(presenter).shouldHaveNoInteractions();
-	}
-
-	@Test
-	void givenPasswordWithoutLetter_shouldThrowException() {
-		thenThrownBy(() -> registerUserUseCase.execute(
-				new UserRegistrationRequest("alice", "12345678"), presenter))
-				.isInstanceOf(WeakPasswordException.class)
-				.hasMessageContaining("Password must contain at least one letter and one number");
+				new UserRegistrationRequest("alice", LocalDate.now()), presenter))
+				.isInstanceOf(IllegalBirthDateException.class)
+				.hasMessageContaining("Birth date must be at least 18 years old");
 
 		then(userRegistrationGateway).shouldHaveNoInteractions();
 		then(presenter).shouldHaveNoInteractions();

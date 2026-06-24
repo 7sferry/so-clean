@@ -1,9 +1,6 @@
 package com.example.soclean.usecase.user.registration;
 
-import com.example.soclean.domain.user.Password;
-import com.example.soclean.domain.user.UserDomain;
-import com.example.soclean.domain.user.Username;
-import com.example.soclean.domain.user.UsernameAlreadyTakenException;
+import com.example.soclean.domain.user.*;
 import lombok.RequiredArgsConstructor;
 
 /************************
@@ -19,11 +16,11 @@ public class UserRegistrationDefaultUseCase implements UserRegistrationUseCase{
 	@Override
 	public void execute(UserRegistrationRequest request, UserRegistrationPresenter presenter) {
 		Username username = new Username(request.username());
-		Password password = new Password(request.password());
+		BirthDate birthDate = new BirthDate(request.birthDate());
 		if (userRegistrationGateway.existsByUsername(username)) {
 			throw new UsernameAlreadyTakenException(username);
 		}
-		UserDomain saved = userRegistrationGateway.save(UserDomain.register(username, password));
+		UserDomain saved = userRegistrationGateway.save(UserDomain.register(username, birthDate));
 		presenter.present(new UserRegistrationResult(saved));
 	}
 

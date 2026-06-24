@@ -1,6 +1,6 @@
 package com.example.soclean.repository.user.detail;
 
-import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.BirthDate;
 import com.example.soclean.domain.user.UserDomain;
 import com.example.soclean.domain.user.Username;
 import com.example.soclean.repository.user.entity.UserEntity;
@@ -30,7 +30,7 @@ public class UserDetailJpaGateway implements UserDetailGateway{
 		return UserDomain.construct(
 				entity.getId(),
 				new Username(entity.getUsername()),
-				new Password(entity.getPassword()),
+				new BirthDate(entity.getBirthDate()),
 				entity.isActive(),
 				entity.getCreatedAt()
 		);

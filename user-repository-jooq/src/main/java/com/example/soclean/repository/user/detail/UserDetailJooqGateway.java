@@ -1,6 +1,6 @@
 package com.example.soclean.repository.user.detail;
 
-import com.example.soclean.domain.user.Password;
+import com.example.soclean.domain.user.BirthDate;
 import com.example.soclean.domain.user.UserDomain;
 import com.example.soclean.domain.user.Username;
 import com.example.soclean.repository.user.generated.tables.Users;
@@ -26,7 +26,7 @@ public class UserDetailJooqGateway implements UserDetailGateway{
 
 	@Override
 	public Optional<UserDomain> findByUsername(Username username) {
-		return dsl.select(USERS.ID, USERS.USERNAME, USERS.PASSWORD, USERS.ACTIVE, USERS.CREATED_AT)
+		return dsl.select(USERS.ID, USERS.USERNAME, USERS.BIRTH_DATE, USERS.ACTIVE, USERS.CREATED_AT)
 				.from(USERS)
 				.where(USERS.USERNAME.eq(username.value()))
 				.fetchOptional()
@@ -37,7 +37,7 @@ public class UserDetailJooqGateway implements UserDetailGateway{
 		return UserDomain.construct(
 				record.get(USERS.ID),
 				new Username(record.get(USERS.USERNAME)),
-				new Password(record.get(USERS.PASSWORD)),
+				new BirthDate(record.get(USERS.BIRTH_DATE)),
 				record.get(USERS.ACTIVE),
 				record.get(USERS.CREATED_AT).toInstant(ZoneOffset.UTC)
 		);
