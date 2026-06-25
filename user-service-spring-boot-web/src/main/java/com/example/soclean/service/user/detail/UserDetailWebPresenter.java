@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class UserDetailWebPresenter implements UserDetailPresenter{
 
 	private static final DateTimeFormatter DATE_FORMATTER =
-			DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy 'at' HH:mm").withZone(ZoneId.of("Asia/Jakarta"));
+			DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy");
 
 	private ResponseEntity<UserDetailResponse> response;
 
@@ -26,8 +26,8 @@ public class UserDetailWebPresenter implements UserDetailPresenter{
 	public void present(UserDetailResult result) {
 		UserDomain user = result.user();
 		String status = user.active() ? "Active" : "Inactive";
-		String createdAt = DATE_FORMATTER.format(user.createdAt());
-		response = ResponseEntity.ok(new UserDetailResponse(user.usernameValue(), status, createdAt));
+		String birthDate = DATE_FORMATTER.format(user.birthDateValue());
+		response = ResponseEntity.ok(new UserDetailResponse(user.usernameValue(), status, birthDate));
 	}
 
 }

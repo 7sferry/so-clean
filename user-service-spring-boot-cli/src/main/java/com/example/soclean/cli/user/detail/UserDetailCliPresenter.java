@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 public class UserDetailCliPresenter implements UserDetailPresenter{
 
 	private static final DateTimeFormatter DATE_FORMATTER =
-			DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").withZone(ZoneId.of("Asia/Jakarta"));
+			DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private String output;
 
@@ -27,7 +27,7 @@ public class UserDetailCliPresenter implements UserDetailPresenter{
 		output = "User detail:\n"
 				+ "  Username  : " + user.username().value() + '\n'
 				+ "  Status    : " + (user.active() ? "Active" : "Inactive") + '\n'
-				+ "  Created at: " + DATE_FORMATTER.format(user.createdAt());
+				+ "  Birth Date: " + DATE_FORMATTER.format(user.birthDateValue());
 	}
 
 }
